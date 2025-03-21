@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Herb Match</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <nav class="navigation">
+            <a href="index.html">Game</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="settings.html" class="active">Settings</a>
+            <a href="help.html">Help</a>
+            <a href="about.html">About</a>
+        </nav>
+        
+        <div class="page-header">
+            <h1>Game Settings</h1>
+        </div>
+        
+        <div class="settings-form">
+            <div class="setting-group">
+                <label for="difficulty">Difficulty Level:</label>
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            
+            <div class="setting-group">
+                <label for="sound-toggle">Sound Effects:</label>
+                <label class="switch">
+                    <input type="checkbox" id="sound-toggle" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            
+            <div class="setting-group">
+                <label for="music-toggle">Background Music:</label>
+                <label class="switch">
+                    <input type="checkbox" id="music-toggle" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            
+            <div class="setting-group">
+                <label for="theme">Theme:</label>
+                <select id="theme">
+                    <option value="green" selected>Green Garden</option>
+                    <option value="blue">Blue Meadow</option>
+                    <option value="purple">Purple Grove</option>
+                </select>
+            </div>
+            
+            <div class="setting-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" placeholder="Your name">
+            </div>
+            
+            <div class="setting-actions">
+                <button id="save-settings">Save Settings</button>
+                <button id="reset-settings">Reset to Default</button>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="settings.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - Herb Match</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <nav class="navigation">
+            <a href="index.html">Game</a>
+            <a href="leaderboard.html" class="active">Leaderboard</a>
+            <a href="settings.html">Settings</a>
+            <a href="help.html">Help</a>
+            <a href="about.html">About</a>
+        </nav>
+        
+        <div class="page-header">
+            <h1>Leaderboard</h1>
+        </div>
+        
+        <div class="leaderboard">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Score</th>
+                        <th>Level</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <!-- Leaderboard entries will be populated here -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="empty-state" id="empty-leaderboard">
+            <p>No scores yet! Play the game to record your score.</p>
+            <a href="index.html" class="button">Play Now</a>
+        </div>
+    </div>
+    
+    <script type="module" src="leaderboard.js"></script>
+</body>
+</html>
