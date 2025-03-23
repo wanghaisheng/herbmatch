@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle Pass - Herb Match</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <nav class="navigation">
+            <a href="index.html">Game</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="battle-pass.html" class="active">Battle Pass</a>
+            <a href="settings.html">Settings</a>
+            <a href="help.html">Help</a>
+            <a href="about.html">About</a>
+        </nav>
+        
+        <div class="page-header">
+            <h1>Herb Match Battle Pass</h1>
+        </div>
+        
+        <div id="battle-pass-container" class="battle-pass-container">
+            <!-- Battle pass content will be generated here -->
+        </div>
+        
+        <div class="battle-pass-themes">
+            <h2>Available Themes</h2>
+            <div class="theme-selector">
+                <div class="theme-option" data-theme="detox">
+                    <div class="theme-icon">🍃</div>
+                    <div class="theme-name">Detoxification</div>
+                </div>
+                <div class="theme-option" data-theme="antiHumidity">
+                    <div class="theme-icon">☂️</div>
+                    <div class="theme-name">Anti-Humidity</div>
+                </div>
+                <div class="theme-option" data-theme="kidneyHealth">
+                    <div class="theme-icon">🌱</div>
+                    <div class="theme-name">Kidney Health</div>
+                </div>
+                <div class="theme-option" data-theme="hairLoss">
+                    <div class="theme-icon">💆</div>
+                    <div class="theme-name">Anti-Hair Loss</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="battle-pass-page.js"></script>
+</body>
+</html>

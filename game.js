@@ -1,5 +1,7 @@
 import { gameConfig } from './config.js';
-import { findValidMove, swapHerbs, findMatches, hasValidMoves } from './game-utilities.js';
+import { addBattlePassXP } from './battle-pass.js';
+import { initHintSystem, resetHintState } from './hint-system.js';
+import { hasValidMoves, swapHerbs, findMatches } from './game-utils.js';
 
 // Game state variables
 let score = 0;
@@ -11,8 +13,6 @@ let gameBoard = [];
 let selectedHerb = null;
 let canPlay = false;
 let username = '';
-let hintAvailable = true;
-let hintTimeout = null;
 
 // DOM elements
 const gameBoardEl = document.getElementById('game-board');
@@ -26,19 +26,25 @@ const levelCompleteModal = document.getElementById('level-complete-modal');
 const gameOverModal = document.getElementById('game-over-modal');
 const finalScoreEl = document.getElementById('final-score');
 const gameOverScoreEl = document.getElementById('game-over-score');
-const hintButton = document.getElementById('hint-button');
 
 // Show start modal when page loads
 window.addEventListener('load', () => {
     showModal(startModal);
     updateTarget();
+    
+    // Initialize hint system
+    initHintSystem();
+    
+    // Expose game state to window for hint system
+    window.gameBoard = gameBoard;
+    window.gameConfig = gameConfig;
+    window.canPlay = canPlay;
 });
 
 // Event listeners for buttons
 document.getElementById('start-button').addEventListener('click', startGame);
 document.getElementById('next-level-button').addEventListener('click', nextLevel);
 document.getElementById('restart-button').addEventListener('click', restartGame);
-hintButton.addEventListener('click', showHint);
 
 function startGame() {
     hideModal(startModal);
@@ -46,6 +52,7 @@ function startGame() {
     initializeBoard();
     startTimer();
     canPlay = true;
+    window.canPlay = canPlay;
     
     // Load saved settings
     loadSettings();
@@ -61,6 +68,9 @@ function nextLevel() {
     initializeBoard();
     startTimer();
     canPlay = true;
+    
+    // Add XP for level completion
+    addBattlePassXP(gameConfig.xpForLevelUp);
 }
 
 function restartGame() {
@@ -84,13 +94,11 @@ function resetGame() {
     moves = 0;
     level = 1;
     timeLeft = gameConfig.initialTime;
-    hintAvailable = true;
-    clearTimeout(hintTimeout);
+    resetHintState(); // Use the imported function
     scoreEl.textContent = score;
     movesEl.textContent = moves;
     levelEl.textContent = level;
     timeEl.textContent = timeLeft;
-    updateHintButton();
 }
 
 function showModal(modal) {
@@ -127,6 +135,9 @@ function gameOver() {
     // Save score to leaderboard
     saveScore();
     
+    // Add XP for game completion
+    addBattlePassXP(gameConfig.xpForGameCompletion);
+    
     showModal(gameOverModal);
 }
 
@@ -155,12 +166,12 @@ function initializeBoard() {
                 herbIndex = Math.floor(Math.random() * gameConfig.herbs.length);
             } while (
                 (row >= 2 && 
-                 gameBoard[row-1][col] && 
-                 gameBoard[row-2][col] && 
+                 gameBoard[row-1] && gameBoard[row-1][col] && 
+                 gameBoard[row-2] && gameBoard[row-2][col] && 
                  gameConfig.herbs[herbIndex].emoji === gameBoard[row-1][col].emoji && 
                  gameConfig.herbs[herbIndex].emoji === gameBoard[row-2][col].emoji) ||
                 (col >= 2 && 
-                 gameBoard[row][col-1] && 
+                 gameBoard[row] && gameBoard[row][col-1] && 
                  gameBoard[row][col-2] && 
                  gameConfig.herbs[herbIndex].emoji === gameBoard[row][col-1].emoji && 
                  gameConfig.herbs[herbIndex].emoji === gameBoard[row][col-2].emoji)
@@ -186,7 +197,7 @@ function initializeBoard() {
     }
     
     // Ensure there's at least one valid move on the board
-    if (!hasValidMoves(gameBoard, gameConfig)) {
+    if (!hasValidMoves(gameBoard, gameConfig.boardSize)) {
         initializeBoard();
     }
 }
@@ -213,11 +224,18 @@ function handleHerbClick(row, col) {
         const selectedElement = getHerbElement(selectedHerb.row, selectedHerb.col);
         selectedElement.classList.remove('selected');
         
-        // Swap herbs
+        // Swap herbs - using imported function
         swapHerbs(gameBoard, selectedHerb.row, selectedHerb.col, row, col);
         
-        // Check for matches
-        const matches = findMatches(gameBoard, gameConfig);
+        // Update the visual representation
+        const element1 = getHerbElement(selectedHerb.row, selectedHerb.col);
+        const element2 = getHerbElement(row, col);
+        
+        element1.textContent = gameBoard[selectedHerb.row][selectedHerb.col].emoji;
+        element2.textContent = gameBoard[row][col].emoji;
+        
+        // Check for matches - using imported function
+        const matches = findMatches(gameBoard, gameConfig.boardSize);
         
         if (matches.length > 0) {
             // Valid move with matches
@@ -255,6 +273,23 @@ function getHerbElement(row, col) {
     return document.querySelector(`.herb[data-row="${row}"][data-col="${col}"]`);
 }
 
+function checkCascadingMatches() {
+    const matches = findMatches(gameBoard, gameConfig.boardSize);
+    
+    if (matches.length > 0) {
+        processMatches(matches);
+        
+        setTimeout(() => {
+            checkCascadingMatches();
+        }, 500);
+    } else {
+        // Check if there are valid moves after cascading
+        if (!hasValidMoves(gameBoard, gameConfig.boardSize)) {
+            shuffleBoard();
+        }
+    }
+}
+
 function processMatches(matches) {
     // Highlight matching herbs
     matches.forEach(match => {
@@ -263,6 +298,9 @@ function processMatches(matches) {
         const matchScore = gameConfig.matchScore[matchLength] || (matchLength * 100);
         score += matchScore;
         scoreEl.textContent = score;
+        
+        // Add XP to battle pass
+        addBattlePassXP(gameConfig.xpForMatch);
         
         // Mark matched herbs
         match.forEach(pos => {
@@ -298,7 +336,7 @@ function shiftHerbsDown() {
         
         // Move existing herbs down
         for (let row = gameConfig.boardSize - 1; row >= 0; row--) {
-            if (gameBoard[row][col] === null) {
+            if (gameBoard[row] && gameBoard[row][col] === null) {
                 emptyCount++;
             } else if (emptyCount > 0) {
                 // Move herb down
@@ -322,23 +360,6 @@ function shiftHerbsDown() {
             const herbElement = getHerbElement(row, col);
             herbElement.textContent = gameBoard[row][col].emoji;
             herbElement.classList.remove('eliminated');
-        }
-    }
-}
-
-function checkCascadingMatches() {
-    const matches = findMatches(gameBoard, gameConfig);
-    
-    if (matches.length > 0) {
-        processMatches(matches);
-        
-        setTimeout(() => {
-            checkCascadingMatches();
-        }, 500);
-    } else {
-        // Check if there are valid moves after cascading
-        if (!hasValidMoves(gameBoard, gameConfig)) {
-            shuffleBoard();
         }
     }
 }
@@ -369,31 +390,9 @@ function shuffleBoard() {
     }
     
     // If still no valid moves, reshuffle
-    if (!hasValidMoves(gameBoard, gameConfig)) {
+    if (!hasValidMoves(gameBoard, gameConfig.boardSize)) {
         shuffleBoard();
     }
-}
-
-function saveScore() {
-    // Get existing leaderboard
-    const leaderboard = JSON.parse(localStorage.getItem('herbMatchLeaderboard')) || [];
-    
-    // Add new score
-    leaderboard.push({
-        name: username,
-        score: score,
-        level: level,
-        date: new Date().toISOString()
-    });
-    
-    // Sort by score (highest first)
-    leaderboard.sort((a, b) => b.score - a.score);
-    
-    // Keep only top 10 scores
-    const topScores = leaderboard.slice(0, 10);
-    
-    // Save back to localStorage
-    localStorage.setItem('herbMatchLeaderboard', JSON.stringify(topScores));
 }
 
 function loadSettings() {
@@ -428,58 +427,24 @@ function applyDifficulty(difficulty) {
     timeEl.textContent = timeLeft;
 }
 
-function showHint() {
-    if (!canPlay || !hintAvailable) return;
+function saveScore() {
+    // Get existing leaderboard
+    const leaderboard = JSON.parse(localStorage.getItem('herbMatchLeaderboard')) || [];
     
-    // Find a valid move
-    let validMove = findValidMove(gameBoard, gameConfig);
+    // Add new score
+    leaderboard.push({
+        name: username,
+        score: score,
+        level: level,
+        date: new Date().toISOString()
+    });
     
-    if (validMove) {
-        // Highlight the valid move
-        const firstElement = getHerbElement(validMove.row1, validMove.col1);
-        const secondElement = getHerbElement(validMove.row2, validMove.col2);
-        
-        firstElement.classList.add('hint');
-        secondElement.classList.add('hint');
-        
-        // Remove the hint after 2 seconds
-        setTimeout(() => {
-            firstElement.classList.remove('hint');
-            secondElement.classList.remove('hint');
-        }, 2000);
-        
-        // Start cooldown timer
-        hintAvailable = false;
-        updateHintButton();
-        
-        hintTimeout = setTimeout(() => {
-            hintAvailable = true;
-            updateHintButton();
-        }, gameConfig.hintCooldown * 1000);
-    }
-}
-
-function updateHintButton() {
-    if (hintAvailable) {
-        hintButton.classList.remove('disabled');
-        hintButton.textContent = 'Hint';
-    } else {
-        hintButton.classList.add('disabled');
-        let timeRemaining = Math.ceil(gameConfig.hintCooldown);
-        hintButton.textContent = `Hint (${timeRemaining}s)`;
-        
-        // Update countdown timer
-        let countdownInterval = setInterval(() => {
-            timeRemaining--;
-            if (timeRemaining <= 0) {
-                clearInterval(countdownInterval);
-                if (hintAvailable) {
-                    hintButton.textContent = 'Hint';
-                    hintButton.classList.remove('disabled');
-                }
-            } else {
-                hintButton.textContent = `Hint (${timeRemaining}s)`;
-            }
-        }, 1000);
-    }
+    // Sort by score (highest first)
+    leaderboard.sort((a, b) => b.score - a.score);
+    
+    // Keep only top 10 scores
+    const topScores = leaderboard.slice(0, 10);
+    
+    // Save back to localStorage
+    localStorage.setItem('herbMatchLeaderboard', JSON.stringify(topScores));
 }

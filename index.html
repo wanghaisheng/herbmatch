@@ -2,335 +2,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="meta_title">Herb Match - The Ultimate Match 3 Game</title>
-    <meta name="description" content="Match herbs to earn points in this addictive match-3 puzzle game!" data-i18n="meta_description">
-    <meta name="keywords" content="match 3 game, herb match, puzzle game, brain training, mobile game">
-    <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="js/i18n.js" defer></script>
-    <script src="js/main.js" defer></script>
+    <title>Herb Match - Match Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mini-modal.css">
+    <link rel="stylesheet" href="game-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 data-i18n="hero_title">HERB MATCH</h1>
-                <h2 data-i18n="hero_subtitle">The Ultimate Match 3 Puzzle Game!</h2>
-                <p class="hero-description" data-i18n="hero_desc">Match herbs, score points, and become the Herb Match master in this addictive puzzle game!</p>
-                <div class="hero-cta">
-                    <a href="#play-now" class="btn btn-primary" data-i18n="hero_cta">Play Now for Free!</a>
-                </div>
+    <div class="game-container">
+        <nav class="navigation">
+            <a href="index.html" class="active">Game</a>
+            <a href="level-select.html">Levels</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="battle-pass.html">Battle Pass</a>
+            <a href="shop.html">Shop</a>
+            <a href="settings.html">Settings</a>
+            <a href="help.html">Help</a>
+            <a href="about.html">About</a>
+        </nav>
+        
+        <div class="header">
+            <div class="score-container">
+                <div class="score">Score: <span id="score">0</span></div>
+                <div class="moves">Moves: <span id="moves">0</span></div>
             </div>
-            <div class="hero-image">
-                <svg width="300" height="300" viewBox="0 0 300 300">
-                    <circle cx="150" cy="150" r="140" fill="#4caf50" opacity="0.2"></circle>
-                    <circle cx="150" cy="150" r="120" fill="#4caf50" opacity="0.3"></circle>
-                    <circle cx="150" cy="150" r="100" fill="#4caf50" opacity="0.5"></circle>
-                    <text x="150" y="170" font-size="80" text-anchor="middle">🌿</text>
-                </svg>
-            </div>
+            <div class="timer">Time: <span id="time">60</span>s</div>
+            <button id="hint-button" class="hint-button">Hint</button>
         </div>
-    </header>
+        
+        <div class="game-board" id="game-board"></div>
+        
+        <div class="bottom-bar">
+            <div class="level">Level <span id="level">1</span></div>
+            <div class="target">Target: <span id="target">1000</span></div>
+        </div>
+    </div>
 
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title" data-i18n="features_title">Game Features</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🌿</div>
-                    <h3 data-i18n="feature_1_title">Addictive Gameplay</h3>
-                    <p data-i18n="feature_1_desc">Simple to learn, challenging to master. Swap herbs to create matches of 3 or more!</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⏱️</div>
-                    <h3 data-i18n="feature_2_title">Time Challenge</h3>
-                    <p data-i18n="feature_2_desc">Race against the clock to reach target scores and advance to higher levels!</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏆</div>
-                    <h3 data-i18n="feature_3_title">Leaderboards</h3>
-                    <p data-i18n="feature_3_desc">Compete with friends and players worldwide to get the highest score!</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3 data-i18n="feature_4_title">Progressive Difficulty</h3>
-                    <p data-i18n="feature_4_desc">Each level gets more challenging with higher target scores!</p>
-                </div>
-            </div>
+    <div class="modal" id="start-modal">
+        <div class="modal-content">
+            <h2>Herb Match</h2>
+            <p>Match herbs to earn points!</p>
+            <p>Match 3 or more herbs in a row or column to score.</p>
+            <button id="start-button">Start Game</button>
         </div>
-    </section>
+    </div>
 
-    <section class="gameplay" id="play-now">
-        <div class="container">
-            <h2 class="section-title" data-i18n="gameplay_title">Play Herb Match Now!</h2>
-            <div class="gameplay-wrapper">
-                <iframe src="game.html" frameborder="0" class="game-iframe"></iframe>
-            </div>
-            <div class="gameplay-cta">
-                <a href="game.html" class="btn btn-primary" data-i18n="gameplay_fullscreen">Play in Full Screen</a>
-            </div>
+    <div class="modal" id="level-complete-modal">
+        <div class="modal-content">
+            <h2>Level Complete!</h2>
+            <p>Score: <span id="final-score">0</span></p>
+            <p>Great job matching those herbs!</p>
+            <button id="next-level-button">Next Level</button>
         </div>
-    </section>
+    </div>
 
-    <section class="testimonials">
-        <div class="container">
-            <h2 class="section-title" data-i18n="testimonials_title">What Players Say</h2>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">★★★★★</div>
-                    <p class="testimonial-text" data-i18n="testimonial_1">"I can't stop playing Herb King! It's so addictive and fun. The perfect game to relax and challenge your mind at the same time."</p>
-                    <div class="testimonial-author" data-i18n="testimonial_1_author">- Sarah T.</div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">★★★★★</div>
-                    <p class="testimonial-text" data-i18n="testimonial_2">"The best match-3 game I've played in years! Love the herb theme and the way the game gets progressively more challenging."</p>
-                    <div class="testimonial-author" data-i18n="testimonial_2_author">- Mike D.</div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">★★★★☆</div>
-                    <p class="testimonial-text" data-i18n="testimonial_3">"Great game to pass the time! I love competing with my friends on the leaderboard. Highly recommended!"</p>
-                    <div class="testimonial-author" data-i18n="testimonial_3_author">- Jessica L.</div>
-                </div>
-            </div>
+    <div class="modal" id="game-over-modal">
+        <div class="modal-content">
+            <h2>Game Over</h2>
+            <p>Score: <span id="game-over-score">0</span></p>
+            <p>You've run out of time!</p>
+            <button id="restart-button">Play Again</button>
         </div>
-    </section>
+    </div>
 
-    <section class="features-showcase">
-        <div class="container">
-            <h2 class="section-title" data-i18n="features_showcase_title">Herb Match Features</h2>
-            <div class="features-showcase-grid">
-                <div class="feature-showcase-item">
-                    <div class="feature-showcase-icon">🎮</div>
-                    <h3 data-i18n="feature_showcase_1_title">Relaxing Gameplay</h3>
-                    <p data-i18n="feature_showcase_1_desc">Enjoy a stress-free gaming experience with calming visuals and soothing herb-themed elements.</p>
-                </div>
-                <div class="feature-showcase-item">
-                    <div class="feature-showcase-icon">🧠</div>
-                    <h3 data-i18n="feature_showcase_2_title">Brain Training</h3>
-                    <p data-i18n="feature_showcase_2_desc">Improve your cognitive skills while having fun! Perfect for keeping your mind sharp at any age.</p>
-                </div>
-                <div class="feature-showcase-item">
-                    <div class="feature-showcase-icon">⏱️</div>
-                    <h3 data-i18n="feature_showcase_3_title">Quick Play Sessions</h3>
-                    <p data-i18n="feature_showcase_3_desc">Perfect for short breaks or longer play sessions. Each level takes just 1-2 minutes to complete!</p>
-                </div>
-                <div class="feature-showcase-item">
-                    <div class="feature-showcase-icon">🌟</div>
-                    <h3 data-i18n="feature_showcase_4_title">Daily Challenges</h3>
-                    <p data-i18n="feature_showcase_4_desc">Return every day for new challenges and rewards that keep the gameplay fresh and exciting.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="gameplay-mechanics">
-        <div class="container">
-            <h2 class="section-title" data-i18n="gameplay_mechanics_title">How to Play</h2>
-            <div class="gameplay-mechanics-grid">
-                <div class="gameplay-step">
-                    <div class="step-number">1</div>
-                    <h3 data-i18n="gameplay_step_1_title">Swap Adjacent Herbs</h3>
-                    <p data-i18n="gameplay_step_1_desc">Tap on an herb and then tap on an adjacent herb to swap their positions.</p>
-                </div>
-                <div class="gameplay-step">
-                    <div class="step-number">2</div>
-                    <h3 data-i18n="gameplay_step_2_title">Match Three or More</h3>
-                    <p data-i18n="gameplay_step_2_desc">Create matches of 3 or more identical herbs in a row or column to score points.</p>
-                </div>
-                <div class="gameplay-step">
-                    <div class="step-number">3</div>
-                    <h3 data-i18n="gameplay_step_3_title">Reach Target Score</h3>
-                    <p data-i18n="gameplay_step_3_desc">Complete the level by reaching the target score before time runs out.</p>
-                </div>
-                <div class="gameplay-step">
-                    <div class="step-number">4</div>
-                    <h3 data-i18n="gameplay_step_4_title">Advance Levels</h3>
-                    <p data-i18n="gameplay_step_4_desc">Progress through increasingly challenging levels with higher targets and new herb combinations.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="teacher-endorsements">
-        <div class="container">
-            <h2 class="section-title" data-i18n="teacher_endorsements_title">Endorsed by Teachers</h2>
-            <div class="endorsements-grid">
-                <div class="endorsement-card">
-                    <div class="endorsement-avatar">👩‍🏫</div>
-                    <p class="endorsement-text" data-i18n="teacher_endorsement_1">"I recommend Herb Match to my students for developing pattern recognition and quick thinking skills in a fun, engaging way."</p>
-                    <div class="endorsement-author" data-i18n="teacher_endorsement_1_author">- Ms. Thompson, 4th Grade Teacher</div>
-                </div>
-                <div class="endorsement-card">
-                    <div class="endorsement-avatar">👨‍🏫</div>
-                    <p class="endorsement-text" data-i18n="teacher_endorsement_2">"Herb Match is a fantastic educational game that helps students learn about different herbs while improving concentration and problem-solving abilities."</p>
-                    <div class="endorsement-author" data-i18n="teacher_endorsement_2_author">- Mr. Davis, Science Educator</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="faq">
-        <div class="container">
-            <h2 class="section-title" data-i18n="faq_title">Frequently Asked Questions</h2>
-            <div class="faq-list">
-                <div class="faq-item">
-                    <h3 data-i18n="faq_question_1">Is Herb Match suitable for children?</h3>
-                    <p data-i18n="faq_answer_1">Yes! Herb Match is designed for players of all ages. It's educational, fun, and has no inappropriate content, making it perfect for children and adults alike.</p>
-                </div>
-                <div class="faq-item">
-                    <h3 data-i18n="faq_question_2">Can I play Herb Match offline?</h3>
-                    <p data-i18n="faq_answer_2">The premium version offers offline play capabilities, while the free version requires an internet connection for certain features.</p>
-                </div>
-                <div class="faq-item">
-                    <h3 data-i18n="faq_question_3">How often are new levels added?</h3>
-                    <p data-i18n="faq_answer_3">We add new levels and herb varieties monthly. Premium users get early access to all new content.</p>
-                </div>
-                <div class="faq-item">
-                    <h3 data-i18n="faq_question_4">Can I sync my progress across devices?</h3>
-                    <p data-i18n="faq_answer_4">Yes! Create a free account to sync your game progress, scores, and achievements across all your devices.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="pricing">
-        <div class="container">
-            <h2 class="section-title" data-i18n="pricing_title">Upgrade Your Experience</h2>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3 data-i18n="pricing_basic_title">Basic</h3>
-                        <div class="pricing-price">
-                            <span class="price-currency">$</span>
-                            <span class="price-amount">0</span>
-                            <span class="price-period" data-i18n="pricing_forever">Forever</span>
-                        </div>
-                    </div>
-                    <div class="pricing-features">
-                        <ul>
-                            <li data-i18n="pricing_basic_feature_1">✅ Full Game Access</li>
-                            <li data-i18n="pricing_basic_feature_2">✅ Ad Supported</li>
-                            <li data-i18n="pricing_basic_feature_3">✅ Basic Leaderboards</li>
-                            <li data-i18n="pricing_basic_feature_4">❌ No Custom Themes</li>
-                            <li data-i18n="pricing_basic_feature_5">❌ Limited Power-ups</li>
-                        </ul>
-                    </div>
-                    <div class="pricing-cta">
-                        <a href="#play-now" class="btn btn-secondary" data-i18n="pricing_basic_cta">Play Free</a>
-                    </div>
-                </div>
-                <div class="pricing-card popular">
-                    <div class="popular-tag" data-i18n="pricing_most_popular">Most Popular</div>
-                    <div class="pricing-header">
-                        <h3 data-i18n="pricing_premium_title">Premium</h3>
-                        <div class="pricing-price">
-                            <span class="price-currency">$</span>
-                            <span class="price-amount">4.99</span>
-                            <span class="price-period" data-i18n="pricing_onetime">One-time</span>
-                        </div>
-                        <div class="price-original" data-i18n="pricing_premium_original">Originally $9.99</div>
-                    </div>
-                    <div class="pricing-features">
-                        <ul>
-                            <li data-i18n="pricing_premium_feature_1">✅ Ad-Free Experience</li>
-                            <li data-i18n="pricing_premium_feature_2">✅ Premium Themes</li>
-                            <li data-i18n="pricing_premium_feature_3">✅ Advanced Leaderboards</li>
-                            <li data-i18n="pricing_premium_feature_4">✅ Unlimited Hints</li>
-                            <li data-i18n="pricing_premium_feature_5">✅ 3 Bonus Power-ups</li>
-                        </ul>
-                    </div>
-                    <div class="pricing-cta">
-                        <a href="#" class="btn btn-primary" data-i18n="pricing_premium_cta">Upgrade Now</a>
-                    </div>
-                </div>
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3 data-i18n="pricing_ultimate_title">Ultimate</h3>
-                        <div class="pricing-price">
-                            <span class="price-currency">$</span>
-                            <span class="price-amount">9.99</span>
-                            <span class="price-period" data-i18n="pricing_onetime">One-time</span>
-                        </div>
-                        <div class="price-original" data-i18n="pricing_ultimate_original">Originally $19.99</div>
-                    </div>
-                    <div class="pricing-features">
-                        <ul>
-                            <li data-i18n="pricing_ultimate_feature_1">✅ Everything in Premium</li>
-                            <li data-i18n="pricing_ultimate_feature_2">✅ Exclusive Ultimate Themes</li>
-                            <li data-i18n="pricing_ultimate_feature_3">✅ Daily Bonus Rewards</li>
-                            <li data-i18n="pricing_ultimate_feature_4">✅ Level Skip Tokens</li>
-                            <li data-i18n="pricing_ultimate_feature_5">✅ Early Access to Updates</li>
-                        </ul>
-                    </div>
-                    <div class="pricing-cta">
-                        <a href="#" class="btn btn-secondary" data-i18n="pricing_ultimate_cta">Get Ultimate</a>
-                    </div>
-                </div>
-            </div>
-            <div class="pricing-guarantee">
-                <p data-i18n="pricing_guarantee">🛡️ 30-Day Money Back Guarantee - No Questions Asked!</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 data-i18n="final_cta_title">Ready to Become the Herb King?</h2>
-                <p data-i18n="final_cta_desc">Join thousands of players already enjoying this addictive match-3 puzzle game!</p>
-                <div class="countdown">
-                    <p data-i18n="final_cta_limited">Limited Time Offer Ends In:</p>
-                    <div class="countdown-timer">
-                        <div class="countdown-item">
-                            <span class="countdown-number" id="countdown-hours">24</span>
-                            <span class="countdown-label" data-i18n="countdown_hours">Hours</span>
-                        </div>
-                        <div class="countdown-item">
-                            <span class="countdown-number" id="countdown-minutes">00</span>
-                            <span class="countdown-label" data-i18n="countdown_minutes">Minutes</span>
-                        </div>
-                        <div class="countdown-item">
-                            <span class="countdown-number" id="countdown-seconds">00</span>
-                            <span class="countdown-label" data-i18n="countdown_seconds">Seconds</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="#play-now" class="btn btn-large" data-i18n="final_cta_button">Play Now for Free!</a>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-logo">
-                    <h2>Herb Match</h2>
-                </div>
-                <div class="language-switcher">
-                    <label for="language-select" data-i18n="language_select">Language:</label>
-                    <select id="language-select" aria-label="Select language">
-                        <option value="en">English</option>
-                        <option value="es">Español</option>
-                        <option value="fr">Français</option>
-                        <option value="de">Deutsch</option>
-                        <option value="zh">中文</option>
-                    </select>
-                </div>
-            </div>
-            <div class="footer-links">
-                <nav>
-                    <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
-                    <a href="#" data-i18n="footer_terms">Terms of Service</a>
-                    <a href="#" data-i18n="footer_contact">Contact Us</a>
-                    <a href="about.html" data-i18n="footer_about">About</a>
-                </nav>
-            </div>
-            <div class="footer-disclaimer">
-                <p data-i18n="footer_disclaimer">This page contains affiliate links. We may earn a commission if you click through and make a purchase.</p>
-                <p data-i18n="footer_copyright"> 2023 Herb Match. All rights reserved.</p>
-                <p class="seo-text">Herb Match is a challenging match-3 puzzle game that helps train your brain while having fun. Match herbs in groups of three or more to score points and advance to higher levels. Perfect for players of all ages who enjoy casual gaming with a strategic twist.</p>
-            </div>
-        </div>
-    </footer>
+    <script type="module" src="config.js"></script>
+    <script type="module" src="game.js"></script>
 </body>
 </html>

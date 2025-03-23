@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Herb Match</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="shop-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <nav class="navigation">
+            <a href="index.html">Game</a>
+            <a href="level-select.html">Levels</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="battle-pass.html">Battle Pass</a>
+            <a href="shop.html" class="active">Shop</a>
+            <a href="settings.html">Settings</a>
+            <a href="help.html">Help</a>
+        </nav>
+        
+        <div class="page-header">
+            <h1>Herb Match Shop</h1>
+        </div>
+        
+        <div class="inventory-summary">
+            <div class="inventory-item">
+                <span class="inventory-icon">💡</span>
+                <span id="hint-count">0</span> Hints
+            </div>
+            <div class="inventory-item">
+                <span class="inventory-icon">⏱️</span>
+                <span id="boost-count">0</span> Time Boosts
+            </div>
+            <div class="inventory-item" id="premium-status">
+                <span class="inventory-icon">👑</span>
+                <span id="premium-label">Free Account</span>
+            </div>
+        </div>
+        
+        <div class="shop-container" id="shop-container">
+            <!-- Shop items will be generated here -->
+        </div>
+        
+        <div class="shop-section">
+            <div class="section-header">
+                <h2>Free Rewards</h2>
+            </div>
+            <div class="free-rewards">
+                <div class="reward-item">
+                    <div class="reward-icon">💡</div>
+                    <div class="reward-title">Free Hint</div>
+                    <div class="reward-description">Watch a short ad to get a free hint</div>
+                    <button id="watch-ad-button" class="ad-button">Watch Ad</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="purchase-modal">
+        <div class="modal-content">
+            <h2>Confirm Purchase</h2>
+            <div id="purchase-details"></div>
+            <div class="modal-buttons">
+                <button id="confirm-purchase">Purchase</button>
+                <button id="cancel-purchase">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="success-modal">
+        <div class="modal-content">
+            <h2>Purchase Successful!</h2>
+            <div id="success-details"></div>
+            <div class="success-animation">✓</div>
+            <button id="close-success">Continue</button>
+        </div>
+    </div>
+    
+    <script type="module" src="shop-page.js"></script>
+</body>
+</html>

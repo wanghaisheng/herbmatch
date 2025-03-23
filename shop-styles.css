@@ -1,0 +1,211 @@
+/* Shop styles */
+.shop-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.shop-item {
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+.shop-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.shop-item.best-value::before {
+    content: 'BEST VALUE';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #FFD700, #FFA500);
+    color: white;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.shop-item.limited-time::after {
+    content: 'LIMITED TIME';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: linear-gradient(90deg, #FF416C, #FF4B2B);
+    color: white;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    animation: pulse 1.5s infinite;
+}
+
+.item-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.item-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
+
+.item-description {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 15px;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.item-price {
+    background: linear-gradient(90deg, #4caf50, #2e7d32);
+    color: white;
+    padding: 8px 0;
+    text-align: center;
+    border-radius: 50px;
+    font-weight: bold;
+    margin-top: auto;
+}
+
+.item-price .original-price {
+    text-decoration: line-through;
+    opacity: 0.7;
+    margin-right: 5px;
+    font-size: 12px;
+}
+
+/* Section headers */
+.shop-section {
+    margin-bottom: 25px;
+}
+
+.section-header {
+    background: linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    color: white;
+    margin: 0;
+}
+
+/* Free rewards section */
+.free-rewards {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 15px;
+}
+
+.reward-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.reward-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.reward-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.reward-description {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 15px;
+}
+
+.ad-button {
+    background: linear-gradient(90deg, #2196f3, #0d47a1);
+    padding: 10px 25px;
+    border-radius: 50px;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ad-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+}
+
+/* Inventory summary */
+.inventory-summary {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 15px;
+    margin: 0 15px 20px;
+}
+
+.inventory-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+}
+
+.inventory-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+#premium-status.active .inventory-icon {
+    filter: drop-shadow(0 0 5px gold);
+}
+
+#premium-status.active #premium-label {
+    color: gold;
+    font-weight: bold;
+}
+
+/* Success animation */
+.success-animation {
+    font-size: 60px;
+    color: #4caf50;
+    margin: 20px 0;
+    animation: success-scale 0.5s ease-out;
+}
+
+@keyframes success-scale {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}

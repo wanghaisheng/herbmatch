@@ -409,6 +409,7 @@ input:checked + .slider:before {
     color: white;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(255, 109, 0, 0.4);
+    position: relative;
 }
 
 .theme-blue .header {
@@ -435,6 +436,13 @@ input:checked + .slider:before {
     font-size: 18px;
     font-weight: bold;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.timer {
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    margin-right: 80px;
 }
 
 .game-board {
@@ -523,17 +531,31 @@ input:checked + .slider:before {
     }
 }
 
-.button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
+.hint-button {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    border-radius: 50px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 5;
 }
 
-#hint-button.disabled {
+.hint-button:hover:not(.disabled) {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.hint-button.disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
 }
 
 .bottom-bar {
@@ -656,6 +678,186 @@ button:hover {
 
 .theme-green button:hover {
     box-shadow: 0 8px 20px rgba(46, 125, 50, 0.5);
+}
+
+/* Battle Pass Styles */
+.battle-pass-container {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 20px;
+}
+
+.battle-pass-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.battle-pass-title h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.battle-pass-progress {
+    margin-bottom: 30px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #ff9d00, #ff6d00);
+    transition: width 0.3s ease;
+}
+
+.theme-blue .progress-fill {
+    background: linear-gradient(135deg, #2196f3, #0d47a1);
+}
+
+.theme-purple .progress-fill {
+    background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+}
+
+.theme-green .progress-fill {
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+}
+
+.battle-pass-rewards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.reward-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.reward-item.locked {
+    opacity: 0.6;
+    filter: grayscale(70%);
+}
+
+.reward-item.unlocked {
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    border-color: rgba(255, 215, 0, 0.5);
+}
+
+.reward-item.premium {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(218, 165, 32, 0.1));
+    border-color: rgba(255, 215, 0, 0.6);
+}
+
+.reward-level {
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.reward-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.reward-name {
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+}
+
+.battle-pass-themes {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.battle-pass-themes h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.theme-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+}
+
+.theme-option {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.theme-option:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+.theme-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.theme-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+
+.reward-notification {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    z-index: 1000;
+    text-align: center;
+    transition: transform 0.4s ease;
+    max-width: 300px;
+}
+
+.reward-notification.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.reward-icon.large {
+    font-size: 48px;
+    margin: 15px 0;
 }
 
 @media (max-width: 500px) {
